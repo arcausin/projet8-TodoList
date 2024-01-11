@@ -25,6 +25,8 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
 
+        date_default_timezone_set('Europe/Paris');
+
         return $bundles;
     }
 

@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  php:
+    image: php:5.6-apache
+    container_name: php56
+    ports:
+      - 8080:80
+    volumes:
+      - .:/var/www/html
+    build:
+      context: .
+      dockerfile: Dockerfile
+  database:
+    image: mysql:5.7
+    container_name: mysql57
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: project8
+      MYSQL_USER: test
+      MYSQL_PASSWORD: pass
+    ports:
+      - 3306:3306
+    volumes:
+      - db:/var/lib/mysql
+  phpma:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - 8081:80
+    environment:
+      PMA_HOST: database
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_USER: test
+      MYSQL_PASSWORD: pass
+  blackfire:
+    image: blackfire/blackfire:2
+    container_name: blackfire
+    ports:
+      - 8707:8707
+    environment:
+        BLACKFIRE_SERVER_ID: cbdbc3e5-b0fd-462b-8b95-bf87d741aacd
+        BLACKFIRE_SERVER_TOKEN: 5a63ec2adaaff95b205c96f1eef97d7b72d10bbb8119ff67f1e23217d3122278
+        BLACKFIRE_CLIENT_ID: 8b7a05a5-a5bf-4f61-8afe-d74045a3ab91
+        BLACKFIRE_CLIENT_TOKEN: 150a5eba0ca7076430764884dc5fd37b8b9b2bb83e48d8c337382430630883b5
+volumes:
+  db:
